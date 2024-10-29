@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="http://unpkg.com/tone"></script>
+    <style src="/styles/styles.css"></style>
+</head>
+<body>
+    <h1>hello world</h1>
+    <button class="note-button">start/stop</button>
+    <div>
+        <h2>complexity: <span class="complexity-display">4</span></h2>
+        <button class="complexity-up">up</button>
+        <button class="complexity-down">down</button>
+    </div>
+    <div>
+        <h2>key: <span class="key-display">0</span></h2>
+        <button class="key-up">up</button>
+        <button class="key-down">down</button>
+    </div>
+    <div class="keyboard">
+        <button class="c">C</button>
+        <button class="csharp">C#</button>
+        <button class="d">D</button>
+        <button class="dsharp">D#</button>
+        <button class="e">E</button>
+        <button class="f">F</button>
+        <button class="fsharp">F#</button>
+        <button class="g">G</button>
+        <button class="gsharp">G#</button>
+        <button class="a">A</button>
+        <button class="asharp">A#</button>
+        <button class="b">B</button>
+    </div>
+    <script src="/utils/chordGenerator.js"></script>
+    <script src="/app.js"></script>
+</body>
+</html>
