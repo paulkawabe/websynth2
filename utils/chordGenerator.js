@@ -42,6 +42,12 @@ const chordGenerator = {
         dom : [0, 4, 7, 10, 2, 5,],
         dim : [0, 3, 6, 9]
     },
+    newChordTypes : {
+        maj : [0, 4, 7, [11, 2, 5]],
+        min : [0, 3, 7, [10, 2, 5]],
+        dom : [0, 4, 7, [10, 2, 5,]],
+        dim : [0, 3, 6, [9]]
+    },
     qualityMap : { //chord qualities for playing degrees of the scale from 0 - 11 in major and minor keys
         maj : [
             "maj",
@@ -72,7 +78,7 @@ const chordGenerator = {
             "dim"
         ]
     },
-    addNotes: (key, keyQuality, note, complexity = 4) => {
+    addNotes: (key, keyQuality, note, complexity = 4, direction) => {
 
         
         //this is the list of tones that will be passed to the synth
@@ -80,21 +86,19 @@ const chordGenerator = {
         
         //this is the chord that will be returned to the synth
         const notes = [];
-        
+
         //the scale degree is calculated by checking the distance between the two values in a base 12 number system
         const degree = key <= note ? note - key : intervalCalc(key, note);
-        
-        // console.log("check");
-        // return degree;
+
         //the mod variable changes the root that is called when looking for the chord
         let mod = 0;
-
+        
         //the quality of the chord based on the scale degree being played and whether it is a major or minor key
         const qualityOfChord = chordGenerator.qualityMap[keyQuality][(degree)];
-
+        
         //the template for the chord being played
         const chordTemplate = chordGenerator.chordTypes[qualityOfChord];
-
+        
         //the total amount of pitch classses to transpose up from pitch class 0 
         const totalTransposition = key + degree + mod;
 
@@ -120,11 +124,21 @@ const chordGenerator = {
             }
         }
 
-        //arrange notes in ascending order
-        notes.sort((a, b) => a - b);
+        //arrange notes in selected order
+        if (direction === 'ascending') {
+            notes.sort((a, b) => a - b);
+        } else {
+            notes.sort((a,b) => a + b);
+        }
 
         const addToChord = (notes, octave = 0) => {
-        
+
+            // let limit = 3;
+
+            // if (octave != 0) {
+            //     limit = notes.length;
+            // }
+
             if (chordGenerator.notes.length - 1 < notes[0] + (octave * 12)) { //terminate recursion if lowest note is outside the range of notes
                 return;
             } else if (notes[0] + (octave * 12) === chordGenerator.notes.length - 1){ //check if chord should include the highest note (C5), add if so. Terminate recursion as there are no higher notes
@@ -140,8 +154,8 @@ const chordGenerator = {
         }
 
         addToChord(notes)
-        console.log(notes)
-        console.log(chord)
+        // console.log(notes)
+        // console.log(chord)
         return chord
     }
 }

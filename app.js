@@ -6,6 +6,9 @@ const complexityDown = document.querySelector(".complexity-down");
 const keyDisplay = document.querySelector(".key-display");
 const keyUp = document.querySelector(".key-up");
 const keyDown = document.querySelector(".key-down");
+const keyQualityToggle = document.querySelector(".key-quality-toggle");
+// const directionToggle = document.querySelector(".direction-toggle");
+const drawTest = document.querySelector(".draw-test");
 
 //keyboard
 const c = document.querySelector(".c");
@@ -21,6 +24,24 @@ const a = document.querySelector(".a");
 const asharp = document.querySelector(".asharp");
 const b = document.querySelector(".b");
 
+Tone.getTransport().bpm.value = 200;
+console.log(Tone.getTransport());
+
+Tone.getTransport().scheduleRepeat(function(time){
+	//use the time argument to schedule a callback with Tone.Draw
+	Tone.Draw.schedule(function(){
+		//do drawing or DOM manipulation here
+    if (drawTest.className == 'draw-test') {
+      drawTest.className = '';
+    } else {
+      drawTest.className = 'draw-test';
+    }
+
+    console.log(time)
+    
+	}, time)
+}, "8n")
+
 class Synthesizer {
 
   constructor() {
@@ -34,6 +55,8 @@ class Synthesizer {
   keyQuality = "maj";
   complexity = 4;
   activeDegree = 0;
+  noteValue = '8n';
+  direction = 'ascending';
 
   // sequence that plays arpeggiated notes in chord
   seq = new Tone.Sequence(
@@ -41,7 +64,7 @@ class Synthesizer {
       this.synth.triggerAttackRelease(note, "4n", time);
     },
     this.chord,
-    "4n"
+    this.noteValue
   ).start(0);
 
   //methods
@@ -68,17 +91,17 @@ class Synthesizer {
         this.synth.triggerAttackRelease(note, "4n", time);
       },
       this.chord,
-      "4n"
+      this.noteValue
     ).start(0);
   }
 
   updateChord() {
-    this.chord = chordGenerator.addNotes(synth.key, synth.keyQuality, synth.activeDegree, synth.complexity);
+    this.chord = chordGenerator.addNotes(synth.key, synth.keyQuality, synth.activeDegree, synth.complexity, synth.direction);
     this.updateSeq();
   }
 
   updateComplexity(direction) {
-    if (this.complexity + direction < 1 || this.complexity + direction > 5) {
+    if (this.complexity + direction < 1 || this.complexity + direction > 6) {
       return;
     }
 
@@ -97,6 +120,35 @@ class Synthesizer {
     this.activeDegree += direction;
     keyDisplay.innerHTML = this.key;
     this.updateChord();
+  }
+
+  updateKeyQuality() {
+    if (this.keyQuality === 'maj') {
+      this.keyQuality = 'min';
+      keyQualityToggle.innerHTML = 'minor';
+      this.updateChord();
+    } else {
+      this.keyQuality = 'maj';
+      keyQualityToggle.innerHTML = 'major';
+      this.updateChord();
+    }
+  }
+
+  // updateDirection() {
+  //   if (this.direction == 'ascending') {
+  //     this.direction = 'descending';
+  //     directionToggle.innerHTML = 'descending';
+  //     this.updateChord();
+  //   } else {
+  //     this.direction = 'ascending';
+  //     directionToggle.innerHTML = 'ascending';
+  //     this.updateChord();
+  //   }
+  // }
+
+  updateActiveDegree(degree) {
+    synth.activeDegree = degree;
+    synth.updateChord();
   }
 
   startstop() {
@@ -118,16 +170,6 @@ class Synthesizer {
 const synth = new Synthesizer();
 
 
-
-
-const keyboardCallback = (degree) => {
-  synth.activeDegree = degree;
-  synth.updateChord(
-    chordGenerator.addNotes(synth.key, synth.keyQuality, synth.activeDegree, synth.complexity)
-  )
-};
-
-
 //add event listeners
 button.addEventListener("click", () => {
   synth.startstop();
@@ -144,17 +186,23 @@ keyUp.addEventListener("click", () => {
 keyDown.addEventListener("click", () => {
   synth.updateKey(-1);
 })
+keyQualityToggle.addEventListener("click", () => {
+  synth.updateKeyQuality();
+})
+// directionToggle.addEventListener("click", () => {
+//   synth.updateDirection();
+// })
 
 //keyboard
-c.addEventListener("click", () => (keyboardCallback(0)));
-csharp.addEventListener("click", () => (keyboardCallback(1)));
-d.addEventListener("click", () => (keyboardCallback(2)));
-dsharp.addEventListener("click", () => (keyboardCallback(3)));
-e.addEventListener("click", () => (keyboardCallback(4)));
-f.addEventListener("click", () => (keyboardCallback(5)));
-fsharp.addEventListener("click", () => (keyboardCallback(6)));
-g.addEventListener("click", () => (keyboardCallback(7)));
-gsharp.addEventListener("click", () => (keyboardCallback(8)));
-a.addEventListener("click", () => (keyboardCallback(9)));
-asharp.addEventListener("click", () => (keyboardCallback(10)));
-b.addEventListener("click", () => (keyboardCallback(11)));
+c.addEventListener("click", () => (synth.updateActiveDegree(0)));
+csharp.addEventListener("click", () => (synth.updateActiveDegree(1)));
+d.addEventListener("click", () => (synth.updateActiveDegree(2)));
+dsharp.addEventListener("click", () => (synth.updateActiveDegree(3)));
+e.addEventListener("click", () => (synth.updateActiveDegree(4)));
+f.addEventListener("click", () => (synth.updateActiveDegree(5)));
+fsharp.addEventListener("click", () => (synth.updateActiveDegree(6)));
+g.addEventListener("click", () => (synth.updateActiveDegree(7)));
+gsharp.addEventListener("click", () => (synth.updateActiveDegree(8)));
+a.addEventListener("click", () => (synth.updateActiveDegree(9)));
+asharp.addEventListener("click", () => (synth.updateActiveDegree(10)));
+b.addEventListener("click", () => (synth.updateActiveDegree(11)));
