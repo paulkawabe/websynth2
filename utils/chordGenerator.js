@@ -84,7 +84,7 @@ const chordGenerator = {
         //this is the list of tones that will be passed to the synth
         const chord = [];
         
-        //this is the chord that will be returned to the synth
+        //this is the list of notes that will be used to generate the chord
         const notes = [];
 
         //the scale degree is calculated by checking the distance between the two values in a base 12 number system
@@ -99,23 +99,24 @@ const chordGenerator = {
         //the template for the chord being played
         const chordTemplate = chordGenerator.chordTypes[qualityOfChord];
         
-        //the total amount of pitch classses to transpose up from pitch class 0 
-        const totalTransposition = key + degree + mod;
-
         //handle applied chords where the root is different from the scale degree being played
         switch(degree) {
             case 1: //applied chord going to the second scale degree
-                mod = 8
-                break;
+            mod = 8
+            break;
             case 6: //applied chord going to the fifth scale degree
-                mod = 8;
-                break;
+            mod = 8;
+            break;
             case 9: //applied chord going to the second scale degree in minor keys
-                if (keyQuality === 'min') {
-                    mod = 5;
-                }
-                break;
+            if (keyQuality === 'min') {
+                mod = 5;
+            }
+            break;
         }
+        
+        //the total amount of pitch classses to transpose up from pitch class 0
+        //represents the root of the chord being generated
+        const totalTransposition = key + degree + mod;
 
         //populate notes array with the transposed pitch of the chord template based on it's complexity (how many notes to include)
         for ( let i = 0; i < complexity; i++) {
@@ -146,7 +147,19 @@ const chordGenerator = {
                 return;
             } else {
                 for (let i = 0; i < notes.length; i++) { //add all notes in the current octave if they exist
+
+                    //ensure that the first two notes added are part of the root triad and not extensions
+                    if (i < 2 && octave === 0) {
+                        let interval = (notes[i] - note) % 12; //check distance from selected note
+
+                        //check if the first two notes are within a 3rd of the selected note (and thus extensions), continue if they are 
+                        if (-2 <= interval && interval <= 2 && interval != 0) { 
+                            continue;
+                        }
+                    } 
+
                     chord.push(chordGenerator.notes[notes[i] + (octave * 12)]);
+
                 }
                 addToChord(notes, octave + 1) //repeat for next octave
             }
@@ -154,8 +167,15 @@ const chordGenerator = {
         }
 
         addToChord(notes)
-        // console.log(notes)
-        // console.log(chord)
+
+        console.log(notes)
+        console.log(chord)
+
+        //current solution for containing sequence to a 4/4 time signature
+        while (chord.length > 8) {
+            chord.pop();
+        }
+
         return chord
     }
 }

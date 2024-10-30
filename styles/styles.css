@@ -1,5 +1,21 @@
-.draw-test {
-    background-color: red;
-    height: 200px;
-    width: 200px;
+.active-key {
+    position: inherit;
+    background-color: lightgreen;
+}
+
+.inactive-key {
+    position: inherit;
+    background-color: aliceblue;
+    transition-duration: 80ms;
+    transition-timing-function: ease-out;
+}
+
+.black-notes {
+    position: relative;
+    top: -20px;
+}
+
+button {
+    min-height: 50px;
+    min-width: 50px;
 }

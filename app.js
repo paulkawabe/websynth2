@@ -8,7 +8,6 @@ const keyUp = document.querySelector(".key-up");
 const keyDown = document.querySelector(".key-down");
 const keyQualityToggle = document.querySelector(".key-quality-toggle");
 // const directionToggle = document.querySelector(".direction-toggle");
-const drawTest = document.querySelector(".draw-test");
 
 //keyboard
 const c = document.querySelector(".c");
@@ -23,24 +22,14 @@ const gsharp = document.querySelector(".gsharp");
 const a = document.querySelector(".a");
 const asharp = document.querySelector(".asharp");
 const b = document.querySelector(".b");
+//indexed array of keys
+const keyboardArray = [c, csharp, d, dsharp, e, f, fsharp, g, gsharp, a, asharp, b];
 
 Tone.getTransport().bpm.value = 200;
 console.log(Tone.getTransport());
 
-Tone.getTransport().scheduleRepeat(function(time){
-	//use the time argument to schedule a callback with Tone.Draw
-	Tone.Draw.schedule(function(){
-		//do drawing or DOM manipulation here
-    if (drawTest.className == 'draw-test') {
-      drawTest.className = '';
-    } else {
-      drawTest.className = 'draw-test';
-    }
 
-    console.log(time)
-    
-	}, time)
-}, "8n")
+
 
 class Synthesizer {
 
@@ -55,33 +44,23 @@ class Synthesizer {
   keyQuality = "maj";
   complexity = 4;
   activeDegree = 0;
-  noteValue = '8n';
+  playedNote = 'C3';
+  playedNoteIndex = 0;
+  noteValue = '4n';
   direction = 'ascending';
 
   // sequence that plays arpeggiated notes in chord
   seq = new Tone.Sequence(
     (time, note) => {
-      this.synth.triggerAttackRelease(note, "4n", time);
+      this.synth.triggerAttackRelease(note, '4n', time);
+      this.synth.playedNote = note;
+      this.synth.playedNoteIndex = chordGenerator.notes.indexOf(note)%12;
     },
     this.chord,
     this.noteValue
   ).start(0);
 
   //methods
-  checkUnique(newChord) { //this ensures that the sequencer is only updated when required
-    //set return variable
-    let unique = false;
-
-    //check against current set chord for new notes, if there are any, return true
-    for (let i = 0; i < this.chord.length; i++) {
-      if (newChord[i] != this.chord[i]) {
-        unique = true;
-        return unique;
-      }
-    }
-
-    return unique;
-  }
 
   updateSeq() {
     this.seq.dispose();
@@ -89,6 +68,8 @@ class Synthesizer {
     this.seq = new Tone.Sequence(
       (time, note) => {
         this.synth.triggerAttackRelease(note, "4n", time);
+        this.synth.playedNote = note;
+        this.synth.playedNoteIndex = chordGenerator.notes.indexOf(note)%12;
       },
       this.chord,
       this.noteValue
@@ -111,7 +92,7 @@ class Synthesizer {
   }
 
   updateKey(direction) {
-    console.log('running update key')
+
     if (this.key + direction < 0 || this.key + direction > 11) {
       return;
     }
@@ -151,6 +132,22 @@ class Synthesizer {
     synth.updateChord();
   }
 
+  readPlayedNote() {
+    return this.synth.playedNote;
+  }
+
+  readPlayedNoteIndex() {
+    return this.synth.playedNoteIndex;
+  }
+
+  clearActiveNotes() {
+    let activeNote = document.querySelector('.active-key')
+    if(!!activeNote) {
+      activeNote.classList.remove('active-key');
+      activeNote.classList.add('inactive-key');
+    }
+  }
+
   startstop() {
     if (this.playing === false) {
       this.updateSeq;
@@ -159,6 +156,11 @@ class Synthesizer {
     } else {
       Tone.getTransport().stop();
       this.playing = false;
+
+      //account for latency in tonejs sequencer
+      setTimeout(() => {
+        this.clearActiveNotes();
+      }, 50);
     }
   }
 
@@ -168,6 +170,21 @@ class Synthesizer {
 }
 
 const synth = new Synthesizer();
+
+
+//DRAW AREA
+Tone.getTransport().scheduleRepeat(function(time){
+	//use the time argument to schedule a callback with Tone.Draw
+	Tone.Draw.schedule(function(){
+		//do drawing or DOM manipulation here
+
+    synth.clearActiveNotes();
+    
+    keyboardArray[synth.readPlayedNoteIndex()].classList.remove('inactive-key');
+    keyboardArray[synth.readPlayedNoteIndex()].classList.add('active-key');
+    
+	}, time)
+}, "4n")
 
 
 //add event listeners
