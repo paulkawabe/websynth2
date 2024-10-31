@@ -42,12 +42,6 @@ const chordGenerator = {
         dom : [0, 4, 7, 10, 2, 5,],
         dim : [0, 3, 6, 9]
     },
-    newChordTypes : {
-        maj : [0, 4, 7, [11, 2, 5]],
-        min : [0, 3, 7, [10, 2, 5]],
-        dom : [0, 4, 7, [10, 2, 5,]],
-        dim : [0, 3, 6, [9]]
-    },
     qualityMap : { //chord qualities for playing degrees of the scale from 0 - 11 in major and minor keys
         maj : [
             "maj",
@@ -81,10 +75,10 @@ const chordGenerator = {
     addNotes: (key, keyQuality, note, complexity = 4, direction) => {
 
         
-        //this is the list of tones that will be passed to the synth
+        //this is the list of tone.js readable pitches that will be passed to the synth eg. "E4"
         const chord = [];
         
-        //this is the list of notes that will be used to generate the chord
+        //this is the list of notes that will be used to generate the chord eg. 4
         const notes = [];
 
         //the scale degree is calculated by checking the distance between the two values in a base 12 number system
@@ -114,7 +108,7 @@ const chordGenerator = {
             break;
         }
         
-        //the total amount of pitch classses to transpose up from pitch class 0
+        //the total amount of pitch classses to transpose up from pitch class 0 (the base of all the chord templates)
         //represents the root of the chord being generated
         const totalTransposition = key + degree + mod;
 

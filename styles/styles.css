@@ -1,8 +1,3 @@
-.active-key {
-    position: inherit;
-    background-color: lightgreen;
-}
-
 .inactive-key {
     position: inherit;
     background-color: aliceblue;
@@ -10,6 +5,18 @@
     transition-timing-function: ease-out;
 }
 
+.tonic {
+    background-color: lightcoral;
+}
+
+.selected-key {
+    background-color: yellow;
+}
+
+.active-key {
+    position: inherit;
+    background-color: lightgreen;
+}
 .black-notes {
     position: relative;
     top: -20px;
