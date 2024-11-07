@@ -1,28 +1,132 @@
+* {
+    box-sizing: border-box;
+    font-family: "source-code-pro", monospace;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: #b7e4f3;
+    align-items: center;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+}
+
+.synth-body {
+    background-color: #f56363;
+    padding: 50px;
+}
+
+.keyboard {
+    display: flex;
+}
+
+.key {
+    position: relative;
+    border: 1px solid grey;
+    border-radius: 4px;
+    background-color: white;
+    height: 360px;
+    width: 90px;
+    transition-duration: 40ms;
+    transition-timing-function: ease-out;
+    margin: 0 2px 0 2px;
+    padding: 4px;
+    display: flex;
+    flex-direction: column-reverse;
+    color: slategrey;
+    font-size: 20px;
+}
+
+.black-key {
+    position: relative;
+    top: -5px;
+    background-color: slategray;
+    color: lightgrey;
+    margin: 0 -22px 0 -23px;
+    height: 200px;
+    width: 45px;
+    z-index: 10;
+}
+
+.key span {
+    text-align: center;
+}
+
 .inactive-key {
-    position: inherit;
-    background-color: aliceblue;
-    transition-duration: 80ms;
+    transition-duration: 100ms;
     transition-timing-function: ease-out;
 }
 
 .tonic {
     background-color: lightcoral;
+    box-shadow: 0px 0px 4px lightcoral;
+    border: 1px solid lightcoral;
+    color: #d25353;
 }
 
 .selected-key {
     background-color: yellow;
+    box-shadow: 0px 0px 4px #ffd900;
+    border: 1px solid rgb(251, 237, 35);
+    color:hsl(45, 93%, 50%);
 }
 
 .active-key {
-    position: inherit;
-    background-color: lightgreen;
+    background-color: #8fd8f0;
+    box-shadow: 0px 0px 4px cyan;
+    border: 1px solid lightsteelblue;
+    color: #4573af;
 }
-.black-notes {
-    position: relative;
-    top: -20px;
-}
+
 
 button {
     min-height: 50px;
     min-width: 50px;
+}
+
+.info-display {
+    background-color: black;
+    color: white;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.info-display::before {
+    content: '';
+    background-color: rgba(white, 0.4);
+    width: 60%;
+    height: 100%;
+    top: 0%;
+
+    transform: skew(45deg);
+
+    position: absolute;
+
+    transition: left 
+
+}
+
+.info-display-box {
+    display: flex;
+    min-width: 235px;
+}
+
+.info-display-box p {
+    margin: 4px;
+}
+
+.reflection {
+    width: 100%;
+    height: 100%;
 }

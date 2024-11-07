@@ -40,6 +40,7 @@ const chordGenerator = {
         maj : [0, 4, 7, 11, 2, 5],
         min : [0, 3, 7, 10, 2, 5],
         dom : [0, 4, 7, 10, 2, 5,],
+        hdim : [0, 3, 6, 10, 1, 5],
         dim : [0, 3, 6, 9]
     },
     qualityMap : { //chord qualities for playing degrees of the scale from 0 - 11 in major and minor keys
@@ -59,12 +60,12 @@ const chordGenerator = {
         ],
         min : [
             "min",
-            "maj",
-            "dim",
+            "dom",
+            "hdim",
             "maj",
             "dim",
             "min",
-            "maj",
+            "dom",
             "dom",
             "maj",
             "dom",
@@ -104,6 +105,11 @@ const chordGenerator = {
             case 9: //applied chord going to the second scale degree in minor keys
             if (keyQuality === 'min') {
                 mod = 5;
+            }
+            break;
+            case 10: //applied chord going to the fourth scale degree in minor keys
+            if (keyQuality === 'min') {
+                mod = 2;
             }
             break;
         }
@@ -166,8 +172,14 @@ const chordGenerator = {
         console.log(chord)
 
         //current solution for containing sequence to a 4/4 time signature
-        while (chord.length > 8) {
-            chord.pop();
+        
+        if (chord.length < 8) {
+            for (let i = 0; chord.length < 8; i++)
+                chord.push(chord[i + 1])
+        } else {            
+            while (chord.length > 8) {
+                chord.pop();
+            }
         }
 
         return chord

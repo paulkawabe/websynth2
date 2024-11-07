@@ -7,7 +7,9 @@ const keyDisplay = document.querySelector(".key-display");
 const keyUp = document.querySelector(".key-up");
 const keyDown = document.querySelector(".key-down");
 const keyQualityToggle = document.querySelector(".key-quality-toggle");
+const keyQualityDisplay = document.querySelector(".key-quality-display");
 const romanNumeralDisplay = document.querySelector(".roman-numeral-display");
+const extensionsDisplay = document.querySelector(".extensions-display");
 // const directionToggle = document.querySelector(".direction-toggle");
 
 //keyboard
@@ -26,8 +28,7 @@ const b = document.querySelector(".b");
 //indexed array of keys
 const keyboardArray = [c, csharp, d, dsharp, e, f, fsharp, g, gsharp, a, asharp, b];
 
-Tone.getTransport().bpm.value = 600;
-console.log(Tone.getTransport());
+Tone.getTransport().bpm.value = 120;
 
 
 
@@ -40,24 +41,28 @@ class Synthesizer {
 
   //status variables
   playing = false;
-  chord = ['C3', 'E3', 'G3', 'B3', 'C4', 'E4', 'G4', 'B4', 'C5'];
+  beat = 1;
+  chord = ['C3', 'E3', 'G3', 'B3', 'C4', 'E4', 'G4', 'B4'];
   key = 0;
   keyQuality = "maj";
   complexity = 4;
   activeDegree = 0;
   playedNote = 'C3';
   playedNoteIndex = 0;
-  romanNumeral = 'vii&deg;/vi';
-  noteValue = '4n';
+  romanNumeral = 'I';
+  noteValue = '8n';
   direction = 'ascending';
 
   //resources
   romanNumerals = {
     maj: ['I', 'V/ii','ii', 'vii&deg;/iii','iii', 'IV', 'V/V','V', 'vii&deg;/vi', 'vi', 'V/IV','vii&deg;'],
-    min: ['i', 'ii', 'III', 'iv', 'v', 'VI', 'vii']
+    min: ['i', '&#9837;II', 'ii&deg;', 'III', 'vii&deg;/iv', 'iv', 'V/V', 'V', 'VI', 'V/ii&deg;', 'V/iv', 'vii&deg;']
   }
 
-  noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+  noteNames = {
+    sharps: ['C', 'C&sharp;', 'D', 'D&sharp;', 'E', 'F', 'F&sharp;', 'G', 'G&sharp;', 'A', 'A&sharp;', 'B'],
+    flats: ['C', 'D&#9837;', 'D', 'E&#9837;', 'E', 'F', 'G&#9837;', 'G', 'A&#9837;', 'A', 'B&#9837;', ]
+  }
 
   // sequence that plays arpeggiated notes in chord
   seq = new Tone.Sequence(
@@ -93,13 +98,32 @@ class Synthesizer {
     this.updateSeq();
   }
 
-  updateComplexity(direction) {
+  updateComplexity(direction = 0) {
     if (this.complexity + direction < 1 || this.complexity + direction > 6) {
       return;
     }
 
     this.complexity += direction;
     complexityDisplay.innerHTML = this.complexity;
+    switch(this.complexity) {
+      case 4:
+        extensionsDisplay.innerHTML = "7";
+        break;
+      case 5:
+        extensionsDisplay.innerHTML = "7, 9";
+        break;
+      case 6:
+        extensionsDisplay.innerHTML = "7, 9, 11";
+        break;
+      default:
+        extensionsDisplay.innerHTML = "none";
+    }
+
+    if (this.complexity > 3 && this.keyQuality === 'maj' && (this.activeDegree === 11 || this.activeDegree === 3)) {
+      extensionsDisplay.innerHTML = "7";
+    } else if (this.complexity > 3 && this.keyQuality === 'min' && (this.activeDegree === 4 || this.activeDegree === 11)) {
+      extensionsDisplay.innerHTML = "7";
+    }
     this.updateChord();
   }
 
@@ -118,7 +142,7 @@ class Synthesizer {
 
     this.key += direction;
     this.updateActiveDegree(this.activeDegree += direction);
-    keyDisplay.innerHTML = this.noteNames.at(this.key);
+    keyDisplay.innerHTML = this.noteNames.sharps.at(this.key);
     keyboardArray[this.key].classList.add('tonic');
     this.updateChord();
   }
@@ -127,25 +151,15 @@ class Synthesizer {
     if (this.keyQuality === 'maj') {
       this.keyQuality = 'min';
       keyQualityToggle.innerHTML = 'minor';
+      keyQualityDisplay.innerHTML = 'minor';
       this.updateChord();
     } else {
       this.keyQuality = 'maj';
       keyQualityToggle.innerHTML = 'major';
+      keyQualityDisplay.innerHTML = 'major';
       this.updateChord();
     }
   }
-
-  // updateDirection() {
-  //   if (this.direction == 'ascending') {
-  //     this.direction = 'descending';
-  //     directionToggle.innerHTML = 'descending';
-  //     this.updateChord();
-  //   } else {
-  //     this.direction = 'ascending';
-  //     directionToggle.innerHTML = 'ascending';
-  //     this.updateChord();
-  //   }
-  // }
 
   updateActiveDegree(degree) {
 
@@ -158,6 +172,7 @@ class Synthesizer {
 
     keyboardArray[synth.activeDegree].classList.add('selected-key');
 
+    this.updateComplexity();
     this.updateChord();
   }
 
@@ -217,7 +232,7 @@ Tone.getTransport().scheduleRepeat(function(time){
     keyboardArray[synth.readPlayedNoteIndex()].classList.add('active-key');
     
 	}, time)
-}, "4n")
+}, "8n")
 
 
 //add event listeners
@@ -239,9 +254,7 @@ keyDown.addEventListener("click", () => {
 keyQualityToggle.addEventListener("click", () => {
   synth.updateKeyQuality();
 })
-// directionToggle.addEventListener("click", () => {
-//   synth.updateDirection();
-// })
+
 
 romanNumeralDisplay.innerHTML = synth.readRomanNumeral();
 keyboardArray[synth.key].classList.add("tonic");

@@ -6,45 +6,64 @@
     <title>Document</title>
     <script src="http://unpkg.com/tone"></script>
     <link rel="stylesheet" href="/styles/styles.css"></link>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
 </head>
 <body>
     <h1>hello world</h1>
-    <button class="note-button">start/stop</button>
-    <div>
-        <h2>complexity: <span class="complexity-display">4</span></h2>
-        <button class="complexity-up">up</button>
-        <button class="complexity-down">down</button>
+    <div class="controls">
+        <button class="note-button">start/stop</button>
+        <div>
+            <h2>complexity: <span class="complexity-display">4</span></h2>
+            <button class="complexity-up">up</button>
+            <button class="complexity-down">down</button>
+        </div>
+        <div>
+            
+            <button class="key-up">up</button>
+            <button class="key-down">down</button>
+        </div>
+        <div>
+            <h2>tonality toggle</h2>
+            <button class="key-quality-toggle">major</button>
+        </div>
     </div>
-    <div>
-        <h2>key: <span class="key-display">C</span></h2>
-        <button class="key-up">up</button>
-        <button class="key-down">down</button>
-    </div>
-    <div>
-        <h2>tonality toggle</h2>
-        <button class="key-quality-toggle">major</button>
-    </div>
-    <div>
-        <h2>Roman Numeral Display</h2>
-        <button class="roman-numeral-display">major</button>
+    <div class="info-display">
+    
+        <div class="info-display-box">
+            <p>chord: <span class="roman-numeral-display">I</span></p>
+        </div>
+        <div class="info-display-box">
+            <p>extensions: <span class="extensions-display">7</span></p>
+        </div>
+        <div class="info-display-box">
+            <p>key: <span class="key-display">C</span> <span class="key-quality-display">Major</span></p>
+        </div>
+        <div class="reflection">
+
+        </div>
+
     </div>
     <!-- <div>
         <h2>direction toggle</h2>
         <button class="direction-toggle">ascending</button>
     </div> -->
-    <div class="keyboard">
-        <button class="c inactive-key">C</button>
-        <button class="csharp black-notes inactive-key">C#</button>
-        <button class="d inactive-key">D</button>
-        <button class="dsharp black-notes inactive-key">D#</button>
-        <button class="e inactive-key">E</button>
-        <button class="f inactive-key">F</button>
-        <button class="fsharp black-notes inactive-key">F#</button>
-        <button class="g inactive-key">G</button>
-        <button class="gsharp black-notes inactive-key">G#</button>
-        <button class="a inactive-key">A</button>
-        <button class="asharp black-notes inactive-key">A#</button>
-        <button class="b inactive-key">B</button>
+    <div class="synth-body">
+        <ul class="keyboard">
+            <li class="c inactive-key key"><span>C</span></li>
+            <li class="csharp key black-key inactive-key"><span>C&sharp;/<br/>D&flat;</span></li>
+            <li class="d inactive-key key"><span>D</span></li>
+            <li class="dsharp key  black-key inactive-key"><span>D&sharp;/<br/>E&flat;</span></li>
+            <li class="e inactive-key key"><span>E</span></li>
+            <li class="f inactive-key key"><span>F</span></li>
+            <li class="fsharp key black-key inactive-key"><span>F&sharp;/<br/>G&flat;</span></li>
+            <li class="g inactive-key key"><span>G</span></li>
+            <li class="gsharp key black-key inactive-key"><span>G&sharp;/<br/>A&flat;</span></li>
+            <li class="a inactive-key key"><span>A</span></li>
+            <li class="asharp key black-key inactive-key"><span>A&sharp;/<br>B&flat;</span></li>
+            <li class="b inactive-key key"><span>B</span></li>
+        </ul>
     </div>
     <script src="/utils/chordGenerator.js"></script>
     <script src="/app.js"></script>
