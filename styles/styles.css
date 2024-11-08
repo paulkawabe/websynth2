@@ -102,21 +102,6 @@ button {
     border-radius: 8px;
 }
 
-.info-display::before {
-    content: '';
-    background-color: rgba(white, 0.4);
-    width: 60%;
-    height: 100%;
-    top: 0%;
-
-    transform: skew(45deg);
-
-    position: absolute;
-
-    transition: left 
-
-}
-
 .info-display-box {
     display: flex;
     min-width: 235px;
@@ -124,9 +109,4 @@ button {
 
 .info-display-box p {
     margin: 4px;
-}
-
-.reflection {
-    width: 100%;
-    height: 100%;
 }
