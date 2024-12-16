@@ -16,6 +16,12 @@ ul {
     padding: 0;
 }
 
+.prevent-select {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }
+
 .controls {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -46,6 +52,7 @@ ul {
     flex-direction: column-reverse;
     color: slategrey;
     font-size: 20px;
+    cursor: pointer;
 }
 
 .black-key {
@@ -95,16 +102,85 @@ button {
     min-width: 50px;
 }
 
+.area-title {
+    width: 100%;
+    border-bottom: black 1.5px solid;
+    margin: 0px;
+}
+
+.tonality-area {
+    display: flex;
+    flex-wrap: wrap;
+    align-self: baseline;
+    column-gap: 10px;
+    grid-row: 2/3;
+    grid-column: 2/3;
+    row-gap: 10px;
+}
+
+.tonality-button {
+    background-color: white;
+    border-radius: 4px;
+    padding: 4px 8px;
+    text-align: center;
+    border: 1.5px solid slategray;
+}
+
+.tonality-button-base {
+    transition: 0.1s ease-out;
+    color: slategrey;
+    position: relative;
+    padding: 2px;
+    background-color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.key-area {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    grid-column: 1/2;
+    grid-row: 2/3;
+}
+
+.key-text {
+    color: slategray
+}
+
+.unpressed {
+    top: -4px;
+    box-shadow: black 0px 4px 0px;
+    color: rgb(216, 216, 216);
+}
+
+.pressed {
+    top: 0;
+    box-shadow: lightpink 0 0 5px;
+    color: red;
+}
+
+.control-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 20px;
+    padding-bottom: 24px;
+    width: 650px;
+}
+
 .info-display {
     background-color: black;
     color: white;
     padding: 1rem;
     border-radius: 8px;
+    /* min-width: 251px; */
+    grid-column: 1/3;
+    grid-row: 1 / 2 ;
 }
 
 .info-display-box {
     display: flex;
-    min-width: 235px;
 }
 
 .info-display-box p {

@@ -19,35 +19,58 @@
             <button class="complexity-up">up</button>
             <button class="complexity-down">down</button>
         </div>
-        <div>
+        <!-- <div>
             <p>Key</p>
             <button class="key-up">up</button>
             <button class="key-down">down</button>
-        </div>
-        <div>
-            <h2>tonality toggle</h2>
-            <button class="key-quality-toggle">major</button>
-        </div>
+        </div> -->
     </div>
-    <div class="info-display">
-    
-        <div class="info-display-box">
-            <p>chord: <span class="roman-numeral-display">I</span></p>
-        </div>
-        <div class="info-display-box">
-            <p>extensions: <span class="extensions-display">7</span></p>
-        </div>
-        <div class="info-display-box">
-            <p>key: <span class="key-display">C</span> <span class="key-quality-display">Major</span></p>
-        </div>
 
-    </div>
     <!-- <div>
         <h2>direction toggle</h2>
         <button class="direction-toggle">ascending</button>
     </div> -->
     <div class="synth-body">
-        <ul class="keyboard">
+        <div class="control-area">
+            <div class="info-display">
+                <div class="info-display-box">
+                    <p>chord: <span class="roman-numeral-display">I</span></p>
+                </div>
+                <div class="info-display-box">
+                    <p>extensions: <span class="extensions-display">7</span></p>
+                </div>
+                <div class="info-display-box">
+                    <p>key: <span class="key-display">C</span> <span class="key-quality-display">Major</span></p>
+                </div>
+            </div>
+            <div class="tonality-area">
+                <p class="area-title">tonality</p>
+                <div class="tonality-button-base unpressed maj-button pressed">
+                    <div class="tonality-button">
+                        <span class="toggle-text prevent-select">maj</span>
+                    </div>
+                </div>
+                <div class="tonality-button-base unpressed min-button">
+                    <div class="tonality-button">
+                        <span class="prevent-select">min</span>
+                    </div>
+                </div>
+            </div>
+            <div class="key-area">
+                <p class="area-title">key</p>
+                <div class="tonality-button-base unpressed key-up">
+                    <div class="tonality-button">
+                        <span class="key-text prevent-select">up</span>
+                    </div>
+                </div>
+                <div class="tonality-button-base unpressed key-down">
+                    <div class="tonality-button">
+                        <span class="key-text prevent-select">down</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ul class="keyboard prevent-select">
             <li class="c inactive-key key"><span>C</span></li>
             <li class="csharp key black-key inactive-key"><span>C&sharp;/<br/>D&flat;</span></li>
             <li class="d inactive-key key"><span>D</span></li>

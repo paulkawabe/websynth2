@@ -6,10 +6,11 @@ const complexityDown = document.querySelector(".complexity-down");
 const keyDisplay = document.querySelector(".key-display");
 const keyUp = document.querySelector(".key-up");
 const keyDown = document.querySelector(".key-down");
-const keyQualityToggle = document.querySelector(".key-quality-toggle");
 const keyQualityDisplay = document.querySelector(".key-quality-display");
 const romanNumeralDisplay = document.querySelector(".roman-numeral-display");
 const extensionsDisplay = document.querySelector(".extensions-display");
+const majButton = document.querySelector(".maj-button");
+const minButton = document.querySelector(".min-button");
 // const directionToggle = document.querySelector(".direction-toggle");
 
 //keyboard
@@ -134,28 +135,35 @@ class Synthesizer {
     }
 
     const currentKey = document.querySelector('.tonic');
-    console.log(currentKey);
 
     if (!!currentKey) {
       currentKey.classList.remove('tonic');
     }
 
     this.key += direction;
-    this.updateActiveDegree(this.activeDegree += direction);
+
+    if ((this.activeDegree + direction) < 0) {
+      this.updateActiveDegree((this.activeDegree += direction + 12) % 12)
+    } else {
+      this.updateActiveDegree((this.activeDegree += direction) % 12);
+    }
+
     keyDisplay.innerHTML = this.noteNames.sharps.at(this.key);
     keyboardArray[this.key].classList.add('tonic');
     this.updateChord();
   }
 
-  updateKeyQuality() {
-    if (this.keyQuality === 'maj') {
+  updateKeyQuality(quality) {
+    if (this.keyQuality === 'maj' && quality !== 'maj') {
       this.keyQuality = 'min';
-      keyQualityToggle.innerHTML = 'minor';
+      minButton.classList.add("pressed");
+      majButton.classList.remove("pressed");
       keyQualityDisplay.innerHTML = 'minor';
       this.updateChord();
-    } else {
+    } else if (this.keyQuality === 'min' && quality !== 'min'){
       this.keyQuality = 'maj';
-      keyQualityToggle.innerHTML = 'major';
+      majButton.classList.add("pressed");
+      minButton.classList.remove("pressed");
       keyQualityDisplay.innerHTML = 'major';
       this.updateChord();
     }
@@ -172,6 +180,7 @@ class Synthesizer {
 
     keyboardArray[synth.activeDegree].classList.add('selected-key');
 
+    console.log(synth.activeDegree)
     this.updateComplexity();
     this.updateChord();
   }
@@ -251,8 +260,11 @@ keyUp.addEventListener("click", () => {
 keyDown.addEventListener("click", () => {
   synth.updateKey(-1);
 })
-keyQualityToggle.addEventListener("click", () => {
-  synth.updateKeyQuality();
+majButton.addEventListener("click", () => {
+  synth.updateKeyQuality('maj');
+})
+minButton.addEventListener("click", () => {
+  synth.updateKeyQuality('min');
 })
 
 

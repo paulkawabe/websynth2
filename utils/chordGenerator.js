@@ -107,10 +107,8 @@ const chordGenerator = {
                 mod = 5;
             }
             break;
-            case 10: //applied chord going to the fourth scale degree in minor keys
-            if (keyQuality === 'min') {
-                mod = 2;
-            }
+            case 10: //applied chord going to the fourth scale degree
+            mod = 2;
             break;
         }
         
@@ -168,8 +166,8 @@ const chordGenerator = {
 
         addToChord(notes)
 
-        console.log(notes)
-        console.log(chord)
+        // console.log(notes)
+        // console.log(chord)
 
         //current solution for containing sequence to a 4/4 time signature
         
