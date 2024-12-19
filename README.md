@@ -14,3 +14,6 @@ Change chord by clicking keys on the keyboard.
 <strong>NEXT STEPS</strong></br>
 - provide controls for BPM, waveform type, delay, reverb
 - continue to update visual language to increase tactile feel
+
+<strong>DEMO 12/19/24</strong></br>
+https://www.loom.com/share/c8d338e2b2a44ddf96ca1e73f7110c37?sid=2529782c-6f22-42d2-bc53-539b8a1122f4
